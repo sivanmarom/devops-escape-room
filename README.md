@@ -112,10 +112,11 @@ curl -X POST "http://localhost:5000/api/progress/update"   -H "Content-Type: app
 ---
 ## 🎥 Demo
 
-![Escape Room Demo](./frontend/src/assets/demo.mp4)
+
+https://github.com/user-attachments/assets/7d285ff6-1623-4a58-85c8-2ec75c585c5a
 
 
-https://github.com/user-attachments/assets/f1f5144e-e9bb-44db-9e20-011933006013
+
 
 
 ---
