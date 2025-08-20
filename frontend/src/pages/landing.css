@@ -1,0 +1,157 @@
+/* מסך מלא עם רקע */
+.landing{
+  position: relative;
+  min-height: 100vh;
+  background: center/100% no-repeat;
+  display: grid;
+  place-items: start center;
+  padding-top: clamp(2rem, 2vw, 9rem);
+   overflow: hidden;
+}
+
+/* שכבת כהות */
+.landing__veil{
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.25), rgba(0,0,0,.65));
+  pointer-events: none;
+}
+
+.landing__hero{
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: clamp(1.2rem, 2.2vw, 2rem);
+  color:  snow;
+  text-shadow: 0 3px 10px rgba(0,0,0,.65);
+  top: 50px;
+  z-index: 3;
+}
+.landing__hero h1{
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem); /* היה ~3.2rem */
+  margin: 0 0 .35rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+.landing__hero p{
+  margin: 0;
+  opacity: .92;
+  font-size: clamp(0.9rem, 1.5vw, 2rem);
+}
+/* ===== Door ===== */
+/* הדלת — חשוב שהקונטיינר לא יחתוך כלום */
+.door {
+  position: relative;
+  z-index: 2;
+  width: clamp(400px, 40vw, 450px); /* ← הגדלת הרוחב */
+  aspect-ratio: 2 / 3;
+  margin: 0 auto;
+  transform: translateY(-90px); /* ← מזיז למעלה (ככל שהמספר גדול יותר - עולה יותר) */
+  overflow: hidden;
+}
+
+/* המסגרת + שכבות */
+.door__frame{
+  --gap: 2px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  border: none;
+  overflow: hidden;
+}
+.btn--enter{
+  position: absolute;
+  z-index: 2;                /* ← מתחת לעלים, כך שנעלם כשהדלת סגורה */
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%) scale(.92);
+  border: 1px solid rgba(0, 255, 100, 0.28);
+  background: linear-gradient(135deg, #0f4d2e, #1a6b45);
+  color: #eaf2f7;
+  box-shadow: 0 6px 24px rgba(0,255,100,.28);
+  padding: .9rem 1.4rem;
+  font-size: 1.05rem;
+  border-radius: 14px;
+  opacity: 0;
+  pointer-events: none;       /* סגור: לא קליקבילי */
+  transition: opacity .25s ease, transform .25s ease;
+}
+.door__frame.is-open .btn--enter{
+  opacity: 1;
+  pointer-events: auto;       /* פתוח: הופך לקליקבילי */
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* כפתור פתיחה/סגירה – נשאר למטה */
+.door__controls{
+  position: absolute;
+  left: 50%;
+  bottom: clamp(70px, 4vh, 40px);
+  transform: translateX(-50%);
+}
+
+/* סגנון בסיס לכפתורים הכלליים */
+.btn{
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  border: 1px solid rgba(0, 255, 100, 0.28);
+  background: rgba(0, 40, 20, 0.85);
+  color: #eaf2f7;
+  padding: .55rem .9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;           /* רגיל */
+  backdrop-filter: blur(6px);
+  transition: transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.btn:hover{ transform: translateY(-1px); background: rgba(0, 60, 30, 0.9); }
+
+
+.btn--primary {
+  background: linear-gradient(135deg, #0f4d2e, #1a6b45); /* גרדיאנט ירוק כהה */
+  color: #eaf2f7;
+  border-color: transparent;
+  box-shadow: 0 6px 24px rgba(0, 255, 100, 0.35);
+}
+
+.btn--primary:hover {
+  transform: translateY(-1px) scale(1.02);
+  background: linear-gradient(135deg, #145a35, #228b57);
+}
+
+/* עלים מעל הכפתור */
+.door__leaf{
+  position: absolute; top: 0; bottom: 0;
+  z-index: 2;                            /* ← העלים מעל הכפתור */
+  width: calc(50% - var(--gap)/2);
+  background-image: var(--door-img);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  box-shadow: none;
+  transition: transform 900ms cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+}
+.door__leaf--left{ left: 0;  background-position: left center;  transform-origin: left center;  border:none; }
+.door__leaf--right{ right: 0; background-position: right center; transform-origin: right center; border:none; }
+
+.door__frame.is-open .door__leaf--left{  transform: rotateY(-68deg) translateX(-2%); }
+.door__frame.is-open .door__leaf--right{ transform: rotateY( 68deg) translateX( 2%); }
+
+
+
+/* מובייל */
+@media (max-width: 640px){
+  .door{ width: min(86vw, 520px); margin-top: 10vh; }
+  
+}
+
+.door__frame.is-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.45), rgba(0,0,0,0.75));
+  z-index: 1; /* מתחת לכפתור אבל מעל הרקע */
+  pointer-events: none;
+}
