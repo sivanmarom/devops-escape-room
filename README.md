@@ -33,18 +33,41 @@ The project creates an interactive, puzzle-like environment where users solve ch
 ## 🧱 Tech Stack
 - **Frontend:** React (Vite) + modern CSS  
 - **Backend:** FastAPI (Python)  
-- **Database:** Redis (progress tracking)  
+- **Database: Redis (progress tracking) + Postgres (future features)
 - **Infra (Local):** Docker Compose  
 
 ---
 
 ## ⚙️ Getting Started
 
-### 1. Run Redis
-```bash
-docker run -d -p 6379:6379 redis:alpine
-```
+### 1. Start Services (Redis + Postgres)
 
+This project includes a docker-compose.dev.yml file for local data services:
+```bash
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: game
+      POSTGRES_PASSWORD: gamepass
+      POSTGRES_DB: gamedb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata: {}
+```
+```bash
+docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml ps
+```
 ### 2. Start the Backend
 ```bash
 cd backend
@@ -82,6 +105,11 @@ curl -X POST "http://localhost:5000/api/progress/update"   -H "Content-Type: app
 ```bash
 curl -X POST "http://localhost:5000/api/progress/update"   -H "Content-Type: application/json"   -d '{"playerId":"PLAYER_ID","level":2,"task":"validYaml","completed":false}'
 ```
+
+---
+## 🎥 Demo
+
+![Escape Room Demo](./assets/demo.gif)
 
 ---
 
